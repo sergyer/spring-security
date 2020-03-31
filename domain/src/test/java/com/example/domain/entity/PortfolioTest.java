@@ -44,7 +44,7 @@ public class PortfolioTest {
 	
 	@Test(expected=NullPointerException.class)
 	public void testUsernameIsMandatory() {
-		Portfolio portfolio = new Portfolio(null, Collections.EMPTY_LIST);
+		Portfolio portfolio = new Portfolio(null, List.of());
 	}
 	
 }

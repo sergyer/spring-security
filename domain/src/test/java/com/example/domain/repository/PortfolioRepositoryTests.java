@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class PortfolioRepositoryTests {
 		List<Transaction> litecoinTransaction = portfolio.getTransactionsForCoin(litecoin.getSymbol());
 		assertEquals(1,bitcoinTransaction.size());
 		assertEquals(2,litecoinTransaction.size());
-		assertEquals(new BigDecimal(3.1), bitcoinTransaction.get(0).getQuantity());
+		assertEquals(new BigDecimal("3.1"), bitcoinTransaction.get(0).getQuantity().setScale(1, RoundingMode.HALF_DOWN));
 	}
 	
 	@Test

@@ -3,13 +3,13 @@ package com.example.domain.repository;
 import com.example.domain.model.SupportQuery;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -41,9 +41,9 @@ public class SupportQueryRepositoryTest {
 		String queryId = query.getId();
 		query.addPost("Cannot remove transaction 12345", "snakamoto");
 		supportRepository.save(query);
-		Optional<SupportQuery> supportQuery = supportRepository.findById(queryId);
-		assertEquals(1, supportQuery.get().getPosts().size());
-		assertEquals("Cannot remove transaction 12345", supportQuery.get().getPosts().get(0).getContent());
+		final SupportQuery supportQuery = supportRepository.findById(queryId).orElseGet(Assertions::fail);
+		assertEquals(1, supportQuery.getPosts().size());
+		assertEquals("Cannot remove transaction 12345", supportQuery.getPosts().get(0).getContent());
 	}
 	
 }
