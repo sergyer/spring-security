@@ -20,6 +20,7 @@ public class AddTransactionToPortfolioDto {
 	private String price;
 	@NonNull
 	private String type;
+
 	private String username;
 	
 }

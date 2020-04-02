@@ -18,18 +18,18 @@ public class PortfolioCommandServiceNoSql implements PortfolioCommandService {
 
 	private final PortfolioRepository portfolioRepository;
 	private final CryptoCurrencyRepository currencyRepository;
-	
+
 	@Override
-	public void addTransactionToPortfolio(AddTransactionToPortfolioDto request) {
-		Portfolio portfolio = portfolioRepository.findByUsername(getUsername());
+	public void addTransactionToPortfolio(AddTransactionToPortfolioDto request,String username) {
+		Portfolio portfolio = portfolioRepository.findByUsername(username);
 		Transaction transaction = createTransactionEntity(request);
 		portfolio.addTransaction(transaction);
 		portfolioRepository.save(portfolio);
 	}
 	
 	@Override
-	public void removeTransactionFromPortfolio(String transactionId) {
-		Portfolio portfolio = portfolioRepository.findByUsername(getUsername());
+	public void removeTransactionFromPortfolio(String transactionId,String username) {
+		Portfolio portfolio = portfolioRepository.findByUsername(username);
 		Transaction transacion = portfolio.getTransactionById(transactionId);
 		portfolio.deleteTransaction(transacion);
 		portfolioRepository.save(portfolio);
