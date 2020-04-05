@@ -27,13 +27,12 @@ public class SupportQueryServiceNoSqlTest {
 
 
     @Test
-    @Ignore
     public void testGetSupportQueries() {
         final SupportQuery query = new SupportQuery("bob", "Cannot remove Transaction");
         List<SupportQuery> queries = new ArrayList<>();
         queries.add(query);
         when(supportRepositoryMock.findByUsername(Mockito.anyString())).thenReturn(queries);
-        List<SupportQueryDto> supportQueries = supportService.getSupportQueriesForUser();
+        List<SupportQueryDto> supportQueries = supportService.getSupportQueriesForUser("bob");
         assertEquals(query.getUsername(), supportQueries.get(0).getUsername());
         assertEquals(query.getSubject(), supportQueries.get(0).getSubject());
         assertEquals(query.getCreated(), supportQueries.get(0).getCreationTime());

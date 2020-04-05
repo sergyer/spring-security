@@ -26,7 +26,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<button name="delTransactionBtn" type="submit">Remove Transactions</button>
+		<button name="delTransactionBtn" th:if="${!transactions.isEmpty()}" type="submit">Remove Transactions</button>
 		</form>
 	</div>	
 </body>

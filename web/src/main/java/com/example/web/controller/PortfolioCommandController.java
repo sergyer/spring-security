@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,9 +25,9 @@ public class PortfolioCommandController {
     }
 
     @PostMapping("/portfolio/transactions/remove")
-    public ModelAndView deleteTransactionFromPortfolio(@ModelAttribute("selected") DeleteTransactionsDto request,@AuthenticationPrincipal User user) {
+    public ModelAndView deleteTransactionFromPortfolio(@ModelAttribute("selected") DeleteTransactionsDto request, @AuthenticationPrincipal User user) {
         for (String id : request.getId()) {
-            commandService.removeTransactionFromPortfolio(id,user.getUsername());
+            commandService.removeTransactionFromPortfolio(id, user.getUsername());
         }
         return new ModelAndView("redirect:/portfolio");
     }

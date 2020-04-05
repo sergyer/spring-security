@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface SupportQueryService {
 
-	List<SupportQueryDto> getSupportQueriesForUser();
+	List<SupportQueryDto> getSupportQueriesForUser(String username);
+
 	SupportQueryDto getSupportQueryById(String queryId);
+
 	List<SupportQueryDto> getSupportQueriesForAllUsers();
 	
 }

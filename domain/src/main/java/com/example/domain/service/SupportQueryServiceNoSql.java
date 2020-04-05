@@ -17,28 +17,20 @@ public class SupportQueryServiceNoSql implements SupportQueryService {
     private final SupportQueryRepository supportRepository;
 
     @Override
-    public List<SupportQueryDto> getSupportQueriesForUser() {
-        System.out.println(getUsername());
-        List<SupportQuery> supportQueries = supportRepository.findByUsername(getUsername());
+    public List<SupportQueryDto> getSupportQueriesForUser(final String username) {
+        List<SupportQuery> supportQueries = supportRepository.findByUsername(username);
         return mapEntityToModel(supportQueries);
     }
 
     @Override
     public SupportQueryDto getSupportQueryById(String id) {
-		return mapEntityToModel(this.supportRepository.findById(id).orElseThrow(RuntimeException::new));
+        return mapEntityToModel(this.supportRepository.findById(id).orElseThrow(RuntimeException::new));
     }
 
     @Override
     public List<SupportQueryDto> getSupportQueriesForAllUsers() {
         List<SupportQuery> supportQueries = this.supportRepository.findAll();
         return mapEntityToModel(supportQueries);
-    }
-
-
-    private String getUsername() {
-//		Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		return ((User)principle).getUsername();
-        return null;
     }
 
     private List<SupportQueryDto> mapEntityToModel(List<SupportQuery> supportQueries) {

@@ -15,13 +15,13 @@ public class SupportCommandServiceNoSql implements SupportCommandService {
 	private final SupportQueryRepository supportRepository;
 	
 	@Override
-	public void createQuery(CreateSupportQueryDto query) {
-		supportRepository.save(mapModelToEntity(query));
+	public void createQuery(CreateSupportQueryDto query, final String username) {
+		supportRepository.save(mapModelToEntity(query,username));
 	}
 	
 	@Override
-	public void postToQuery(PostDto model) {
-		Post post = new Post(getUsername() , model.getContent(), System.currentTimeMillis());
+	public void postToQuery(PostDto model, final String username) {
+		Post post = new Post(username , model.getContent(), System.currentTimeMillis());
 		SupportQuery query = supportRepository.findById(model.getQueryId()).get();
 		query.addPost(post);
 		if(model.isResolve()) {
@@ -37,16 +37,10 @@ public class SupportCommandServiceNoSql implements SupportCommandService {
 		supportRepository.save(query);
 	}
 	
-	private SupportQuery mapModelToEntity(CreateSupportQueryDto model) {
-		SupportQuery supportQuery = new SupportQuery(getUsername() , model.getSubject());
-		supportQuery.addPost(model.getContent(), getUsername() );
+	private SupportQuery mapModelToEntity(CreateSupportQueryDto model, final String username) {
+		SupportQuery supportQuery = new SupportQuery(username , model.getSubject());
+		supportQuery.addPost(model.getContent(), username );
 		return supportQuery;
-	}
-	
-	private String getUsername() {
-//		Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		return ((User)principle).getUsername();
-		return null;
 	}
 	
 }

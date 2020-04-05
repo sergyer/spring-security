@@ -5,10 +5,10 @@ import com.example.domain.dto.PostDto;
 
 public interface SupportCommandService {
 
-	void createQuery(CreateSupportQueryDto query);
+    void createQuery(CreateSupportQueryDto query, String username);
 
-	void postToQuery(PostDto supportQueryPostModel);
+    void postToQuery(PostDto supportQueryPostModel, String username);
 
-	void resolveQuery(String id);
-	
+    void resolveQuery(String id);
+
 }
