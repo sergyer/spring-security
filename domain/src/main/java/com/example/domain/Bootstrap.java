@@ -12,8 +12,7 @@ import org.springframework.context.event.EventListener;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
-@SpringBootApplication
-public class ApplicationContext {
+public class Bootstrap {
     private final PortfolioRepository portfolioRepository;
 
     private final CryptoCurrencyRepository cryptoRepository;
