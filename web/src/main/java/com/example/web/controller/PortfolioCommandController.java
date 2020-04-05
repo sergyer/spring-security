@@ -17,7 +17,6 @@ public class PortfolioCommandController {
 
     private final PortfolioCommandService commandService;
 
-
     @PostMapping("/portfolio/transactions")
     public ModelAndView addTransactionToPortfolio(@ModelAttribute("transaction") AddTransactionToPortfolioDto request, @AuthenticationPrincipal User user) {
         commandService.addTransactionToPortfolio(request, user.getUsername());
