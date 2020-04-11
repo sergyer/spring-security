@@ -15,8 +15,7 @@ import org.springframework.context.event.EventListener;
 
 import java.util.ArrayList;
 
-@SpringBootConfiguration
-@EnableAutoConfiguration
+@SpringBootApplication
 @RequiredArgsConstructor
 public class Bootstrap {
     private final PortfolioRepository portfolioRepository;
