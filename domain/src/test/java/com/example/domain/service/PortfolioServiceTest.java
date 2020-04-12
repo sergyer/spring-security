@@ -21,6 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.domain.model.Type.BUY;
 import static com.example.domain.model.Type.SELL;
@@ -59,7 +60,7 @@ public class PortfolioServiceTest {
     @Test
     public void testGetPortfolioPositions() {
         when(currencyService.getSupportedCryptoCurrencies()).thenReturn(cryptos);
-        when(portfolioRepostiory.findByUsername("snakamoto")).thenReturn(portfolio);
+        when(portfolioRepostiory.findByUsername("snakamoto")).thenReturn(Optional.ofNullable(portfolio));
         when(pricingService.getCurrentPriceForCrypto(Mockito.anyString())).thenReturn(BigDecimal.TEN);
         PortfolioPositionsDto repsonse = portfolioService.getPortfolioPositions("snakamoto");
 

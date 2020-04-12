@@ -5,7 +5,10 @@ import com.example.domain.dto.DeleteTransactionsDto;
 import com.example.domain.dto.ListTransactionsDto;
 import com.example.domain.dto.TransactionDetailsDto;
 import com.example.domain.service.PortfolioQueryService;
+import com.example.domain.service.PricingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Controller
@@ -21,6 +26,8 @@ import java.util.stream.Collectors;
 public class PortfolioQueryController {
 
     private final PortfolioQueryService portfolioService;
+
+    private final PricingService pricingService;
 
     @GetMapping("/")
     public String index() {
@@ -33,6 +40,12 @@ public class PortfolioQueryController {
         model.addObject("positionsResponse", portfolioService.getPortfolioPositions(user.getUsername()));
         model.addObject("transaction", new AddTransactionToPortfolioDto());
         return model;
+    }
+
+    @GetMapping("/price")
+    public ResponseEntity<BigDecimal> price() {
+        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(2, TimeUnit.MINUTES).cachePublic().noTransform())
+                             .body(pricingService.getCurrentPriceForCrypto("BTC"));
     }
 
     @GetMapping(value = {"/portfolio/transactions", "/portfolio/transactions/{symbol}"})

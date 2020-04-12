@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +22,7 @@ public class PortfolioCommandServiceNoSql implements PortfolioCommandService {
 
 	@Override
 	public void addTransactionToPortfolio(AddTransactionToPortfolioDto request,String username) {
-		Portfolio portfolio = portfolioRepository.findByUsername(username);
+		Portfolio portfolio = portfolioRepository.findByUsername(username).orElse(new Portfolio(username, new ArrayList<Transaction>()));
 		Transaction transaction = createTransactionEntity(request);
 		portfolio.addTransaction(transaction);
 		portfolioRepository.save(portfolio);
@@ -29,7 +30,7 @@ public class PortfolioCommandServiceNoSql implements PortfolioCommandService {
 	
 	@Override
 	public void removeTransactionFromPortfolio(String transactionId,String username) {
-		Portfolio portfolio = portfolioRepository.findByUsername(username);
+		Portfolio portfolio = portfolioRepository.findByUsername(username).orElseThrow(RuntimeException::new);
 		Transaction transacion = portfolio.getTransactionById(transactionId);
 		portfolio.deleteTransaction(transacion);
 		portfolioRepository.save(portfolio);

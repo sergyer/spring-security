@@ -48,7 +48,7 @@ public class PortfolioRepositoryTests {
 		CryptoCurrency bitcoin = cryptoRepository.findBySymbol("BTC");
 		CryptoCurrency litecoin = cryptoRepository.findBySymbol("LTC");
 		//When
-		Portfolio portfolio = portfolioRepository.findByUsername("snakamoto");
+		Portfolio portfolio = portfolioRepository.findByUsername("snakamoto").orElseThrow(AssertionError::new);
 		//Then
 		assertEquals(3, portfolio.getTransactions().size());
 		List<Transaction> bitcoinTransaction = portfolio.getTransactionsForCoin(bitcoin.getSymbol());
@@ -60,13 +60,13 @@ public class PortfolioRepositoryTests {
 	
 	@Test
 	public void testDeleteTransactionFromPortfolio() {
-		Portfolio portfolio = portfolioRepository.findByUsername("snakamoto");
+		Portfolio portfolio = portfolioRepository.findByUsername("snakamoto").orElseThrow(AssertionError::new);
 		Transaction randomTransaction = portfolio.getTransactions().get(0);
 		assertTrue(portfolio.getTransactions().contains(randomTransaction));
 		portfolio.deleteTransaction(randomTransaction);
 		assertEquals(2, portfolio.getTransactions().size());
 		portfolioRepository.save(portfolio);
-		portfolio = portfolioRepository.findByUsername("snakamoto");
+		portfolio = portfolioRepository.findByUsername("snakamoto").orElseThrow(AssertionError::new);
 		assertEquals(2, portfolio.getTransactions().size());
 		assertFalse(portfolio.getTransactions().contains(randomTransaction));
 	}

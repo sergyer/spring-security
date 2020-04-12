@@ -9,7 +9,7 @@ public class DummyPricingService implements PricingService {
 
 	@Override
 	public BigDecimal getCurrentPriceForCrypto(String symbol) {
-		return new BigDecimal("11000.00");
+		return new BigDecimal("12000.00");
 	}
 
 }

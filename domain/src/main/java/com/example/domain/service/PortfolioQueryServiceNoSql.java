@@ -25,7 +25,7 @@ public class PortfolioQueryServiceNoSql implements PortfolioQueryService {
     @Override
     public PortfolioPositionsDto getPortfolioPositions(final String username) {
         List<CryptoCurrencyDto> cryptos = currencyService.getSupportedCryptoCurrencies();
-        Portfolio portfolio = portfolioRepository.findByUsername(username);
+        Portfolio portfolio = portfolioRepository.findByUsername(username).orElse(new Portfolio(username, new ArrayList<Transaction>()));
         List<PositionDto> positions = calculatePositions(cryptos, portfolio);
         Map<String, String> cryptoMap = convertCryptoListToMap(cryptos);
         return new PortfolioPositionsDto("", "", positions, cryptoMap);
@@ -33,13 +33,16 @@ public class PortfolioQueryServiceNoSql implements PortfolioQueryService {
 
     @Override
     public ListTransactionsDto getPortfolioTransactions(final String username) {
-        Portfolio portfolio = this.portfolioRepository.findByUsername(username);
+        Portfolio portfolio = this.portfolioRepository.findByUsername(username).orElseThrow(RuntimeException::new);
         List<Transaction> transactions = portfolio.getTransactions();
         return createListTransactionsResponse(username, transactions);
     }
 
     private List<PositionDto> calculatePositions(List<CryptoCurrencyDto> cryptos, Portfolio portfolio) {
         List<PositionDto> positions = new ArrayList<>();
+        if (portfolio == null) {
+            return positions;
+        }
         for (CryptoCurrencyDto crypto : cryptos) {
             List<Transaction> cryptoTransactions = portfolio.getTransactionsForCoin(crypto.getSymbol());
             BigDecimal quantity = calculatePositionQuantity(cryptoTransactions);
