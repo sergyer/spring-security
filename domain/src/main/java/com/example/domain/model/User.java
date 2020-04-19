@@ -25,6 +25,8 @@ public class User {
 
     private String lastName;
 
+    private String role;
+
     @Email
     private String email;
 

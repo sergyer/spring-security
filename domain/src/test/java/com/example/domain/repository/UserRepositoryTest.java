@@ -17,8 +17,8 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindByUsername() {
-        repository.save(new User("wally", "Wally", "Lewis", "Straus", "wally@o2.nz", "password"));
-        User userDetails = repository.findByUsername("Wally");
+        repository.save(new User("wally", "Wally", "Lewis", "Straus", "","wally@o2.nz", "password"));
+        User userDetails = repository.findByUsername("Wally").orElseThrow(AssertionError::new);
         Assert.assertEquals("Wally", userDetails.getUsername());
         Assert.assertEquals("Lewis", userDetails.getFirstName());
         Assert.assertEquals("Straus", userDetails.getLastName());
@@ -28,7 +28,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindByEmail() {
-        User userDetails = repository.findByEmail("wally@o2.nz");
+        User userDetails = repository.findByEmail("wally@o2.nz").orElseThrow(AssertionError::new);
         Assert.assertEquals("Wally", userDetails.getUsername());
         Assert.assertEquals("Lewis", userDetails.getFirstName());
         Assert.assertEquals("Straus", userDetails.getLastName());

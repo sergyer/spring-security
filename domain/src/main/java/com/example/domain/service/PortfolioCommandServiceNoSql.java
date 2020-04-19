@@ -9,6 +9,7 @@ import com.example.domain.repository.CryptoCurrencyRepository;
 import com.example.domain.repository.PortfolioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class PortfolioCommandServiceNoSql implements PortfolioCommandService {
 		portfolio.addTransaction(transaction);
 		portfolioRepository.save(portfolio);
 	}
-	
+
 	@Override
 	public void removeTransactionFromPortfolio(String transactionId,String username) {
 		Portfolio portfolio = portfolioRepository.findByUsername(username).orElseThrow(RuntimeException::new);
@@ -36,19 +37,12 @@ public class PortfolioCommandServiceNoSql implements PortfolioCommandService {
 		portfolioRepository.save(portfolio);
 	}
 	
-	private String getUsername() {
-//		Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		return ((User)principle).getUsername();
-		return null;
-	}
-	
 	private Transaction createTransactionEntity(AddTransactionToPortfolioDto request) {
 		CryptoCurrency crpytoCurrency = currencyRepository.findBySymbol(request.getCryptoSymbol());
 		Type type = Type.valueOf(request.getType());
 		BigDecimal quantity = new BigDecimal(request.getQuantity());
 		BigDecimal price = new BigDecimal(request.getPrice());
-		Transaction transaction = new Transaction(crpytoCurrency, type, quantity, price,System.currentTimeMillis());
-		return transaction;
+		return new Transaction(crpytoCurrency, type, quantity, price,System.currentTimeMillis());
 	}
 
 }

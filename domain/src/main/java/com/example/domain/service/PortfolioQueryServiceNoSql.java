@@ -33,7 +33,7 @@ public class PortfolioQueryServiceNoSql implements PortfolioQueryService {
 
     @Override
     public ListTransactionsDto getPortfolioTransactions(final String username) {
-        Portfolio portfolio = this.portfolioRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+        Portfolio portfolio = this.portfolioRepository.findByUsername(username).orElse(new Portfolio(username, List.of()));
         List<Transaction> transactions = portfolio.getTransactions();
         return createListTransactionsResponse(username, transactions);
     }

@@ -21,6 +21,7 @@
         <module>web</module>
         <module>basic-and-form</module>
         <module>default-hardcoded</module>
+        <module>custom-user-details</module>
     </modules>
 
 </project>

@@ -6,7 +6,9 @@ import com.example.domain.model.Post;
 import com.example.domain.model.SupportQuery;
 import com.example.domain.repository.SupportQueryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,7 +20,7 @@ public class SupportCommandServiceNoSql implements SupportCommandService {
 	public void createQuery(CreateSupportQueryDto query, final String username) {
 		supportRepository.save(mapModelToEntity(query,username));
 	}
-	
+
 	@Override
 	public void postToQuery(PostDto model, final String username) {
 		Post post = new Post(username , model.getContent(), System.currentTimeMillis());
@@ -29,10 +31,11 @@ public class SupportCommandServiceNoSql implements SupportCommandService {
 		}
 		supportRepository.save(query);
 	}
-	
+
 	@Override
 	public void resolveQuery(String id) {
-		SupportQuery query = supportRepository.findById(id).get();
+		SupportQuery query = supportRepository.findById(id).orElseThrow(RuntimeException::new);
+
 		query.resolve();
 		supportRepository.save(query);
 	}

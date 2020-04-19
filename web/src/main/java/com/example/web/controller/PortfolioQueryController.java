@@ -49,7 +49,7 @@ public class PortfolioQueryController {
     }
 
     @GetMapping(value = {"/portfolio/transactions", "/portfolio/transactions/{symbol}"})
-    public ModelAndView listTransactionsForPortfolio(@AuthenticationPrincipal User user, @PathVariable String symbol) {
+    public ModelAndView listTransactionsForPortfolio(@AuthenticationPrincipal User user, @PathVariable(required = false) String symbol) {
         final ListTransactionsDto transactions = portfolioService.getPortfolioTransactions(user.getUsername());
         ModelAndView model = new ModelAndView();
         if (symbol != null) {
