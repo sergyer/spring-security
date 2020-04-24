@@ -1,9 +1,10 @@
-package com.example.web.controller;
+package com.example.custom.controller;
 
 
 import com.example.domain.dto.UserDto;
 import com.example.domain.service.UserRegistrationServiceNoSql;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,8 @@ public class RegistrationController {
 
     private final UserRegistrationServiceNoSql service;
 
+    private final PasswordEncoder passwordEncoder;
+
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("user",new UserDto());
@@ -30,6 +33,7 @@ public class RegistrationController {
         if(result.hasErrors()) {
             return "registration";
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         service.createUser(user);
         return "redirect:register?success";
     }
